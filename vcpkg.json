@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+
+  "name": "kriegboar",
+  "dependencies": [ {
+      "name" : "fmt",
+      "version>=" : "10.1.0"
+    }
+  ],
+
+  "builtin-baseline": "e4b44696112d3a27b3dfe7743cfa3c2e4d9310fd"
+}
