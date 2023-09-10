@@ -3,7 +3,7 @@
 
 
 
-int main() {
-    
+int main()
+{
     std::cout << "KriegBoar VM" << std::endl;
 }
