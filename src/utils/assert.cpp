@@ -61,7 +61,7 @@ void always_assert(bool result, std::string const& message, SourceLocation locat
     if (result == true) [[likely]]
         return;
 
-    // build panic m_message, using custom if there is one
+    // build panic message, using custom if there is one
     std::string panic_message = "assertion failed";
     if (message.empty() == false)
         panic_message = fmt::format("assertion failed: {}", message);
