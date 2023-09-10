@@ -1,7 +1,7 @@
 
 # target
 
-add_library(utils __placeholder__.cpp)
+add_library(utils source_location.hpp)
 target_include_directories(utils INTERFACE .)
 set_build_flags(utils)
 
