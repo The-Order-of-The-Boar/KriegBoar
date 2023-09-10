@@ -14,7 +14,7 @@ private:
 
 public:
 
-    explicit AssertException(std::string message, SourceLocation location)
+    AssertException(std::string message, SourceLocation location)
     {
         m_message = fmt::format("({}:{}): {}", location.filename, location.line, message);
     }
