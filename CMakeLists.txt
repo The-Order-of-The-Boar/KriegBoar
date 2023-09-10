@@ -8,16 +8,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # project config
 
-set(CMAKE_CXX_FLAGS_DEBUG "" CACHE STRING "flags")
-set(CMAKE_CXX_FLAGS_RELEASE  "" CACHE STRING "flags")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "" CACHE STRING "flags")
-set(CMAKE_CXX_FLAGS_MINSIZEREL  "" CACHE STRING "flags")
-set(CMAKE_CXX_STANDARD 20)
-
 project(KriegBoar)
 
+set(CMAKE_CXX_FLAGS_DEBUG "" CACHE STRING "flags" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "" CACHE STRING "flags" FORCE)
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "" CACHE STRING "flags" FORCE)
+set(CMAKE_CXX_STANDARD 20)
 
-# kbc flags
+# compiler flags
 
 if ((NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU") AND (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"))
     message(FATAL "unsupported compiler")
@@ -39,7 +37,7 @@ function(set_build_flags executable)
             -Werror=switch
             -fdiagnostics-color=always
 
-            $<$<CONFIG:DEBUG>:-g>
+            $<$<CONFIG:DEBUG,RELWITHDEBINFO>:-g>
 
             $<$<CONFIG:RELEASE>:-DNDEBUG>
             $<$<CONFIG:RELEASE>:-O3>
