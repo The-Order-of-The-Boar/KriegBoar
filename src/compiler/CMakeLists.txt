@@ -3,6 +3,8 @@
 
 add_executable(kbc main.cpp
         tree.hpp
+        parser.hpp
+        parser.cpp
 )
 set_build_flags(kbc)
 

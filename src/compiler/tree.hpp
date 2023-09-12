@@ -40,6 +40,12 @@ struct FunctionCall: public Expression {
     std::vector<std::unique_ptr<Expression>> args;
 };
 
+struct NativeFunctionCall: public Expression {
+
+    std::string name;
+    std::unique_ptr<Expression> arg;
+};
+
 struct Function: public Expression {
 
     std::vector<std::string> parameters;
