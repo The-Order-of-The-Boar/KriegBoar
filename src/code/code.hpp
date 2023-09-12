@@ -34,14 +34,9 @@ struct Instruction {
     const Address src2;
     const size_t label;
 
-    union {
-        const bool imm_bool;
-        const std::string imm_string;
-        const int32_t imm_number;
-    };
 };
 
 struct Code {
 
-    const std::vector<Instruction> code;
+    const std::vector<Instruction> instructions;
 };

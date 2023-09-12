@@ -1,7 +1,9 @@
 
 # target
 
-add_executable(kbvm main.cpp)
+add_executable(kbvm main.cpp
+        virtual_machine.cpp
+)
 set_build_flags(kbvm)
 
 
