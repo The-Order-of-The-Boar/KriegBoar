@@ -1,14 +1,14 @@
 
 # target
 
-add_library(utils
+add_library(kbutils
         source_location.hpp
         assert.cpp
         assert.hpp
 )
-target_include_directories(utils INTERFACE .)
-set_build_flags(utils)
+target_include_directories(kbutils INTERFACE .)
+set_build_flags(kbutils)
 
 # libraries
 
-target_link_libraries(utils PRIVATE fmt::fmt)
+target_link_libraries(kbutils PRIVATE fmt::fmt)

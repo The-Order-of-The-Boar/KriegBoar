@@ -55,7 +55,7 @@ find_package(fmt CONFIG REQUIRED)
 
 # targets
 
-add_subdirectory(src/kbc kbc)
-add_subdirectory(src/kbvm kbvm)
-add_subdirectory(src/utils utils)
-add_subdirectory(src/code code)
+add_subdirectory(src/compiler kbc)
+add_subdirectory(src/vm kbvm)
+add_subdirectory(src/utils kbutils)
+add_subdirectory(src/code kbcode)
