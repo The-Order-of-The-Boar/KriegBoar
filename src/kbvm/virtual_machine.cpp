@@ -175,8 +175,10 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
             std::cout << this->get_string(instruction.src1) << std::endl;
             break;
         case InstructionType::Branch:
+            this->program_counter = instruction.label;
             break;
         case InstructionType::BranchIf:
+            if(this->get_bool(instruction.src1)) this->program_counter = instruction.label;
             break;
     }
 }
