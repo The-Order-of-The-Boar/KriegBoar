@@ -51,6 +51,7 @@ endfunction()
 # libraries
 
 find_package(fmt CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 
 # targets
