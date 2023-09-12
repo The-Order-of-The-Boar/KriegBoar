@@ -6,13 +6,26 @@
 
 #include "../code/code.hpp"
 
-union MemoryCell
+enum MemoryType
 {
-    int int_var;
+    Number,
+    Bool,
+    String
+};
+
+union MemoryVar
+{
+    int number_var;
     bool bool_var;
     std::string string_var = "";
 
-    ~MemoryCell(){};
+    ~MemoryVar(){};
+};
+
+struct MemoryCell
+{
+   MemoryType type;
+   MemoryVar var;
 };
 
 class KVirtualMachine
@@ -25,9 +38,15 @@ private:
     bool get_bool(const std::string& address) const;
     const std::string& get_string(const std::string& address) const;
 
-    void set(const std::string& address, const int);
-    void set(const std::string& address, const bool);
-    void set(const std::string& address, std::string);
+    void set(const std::string& address, const int value);
+    void set(const std::string& address, const bool value);
+    void set(const std::string& address, std::string value);
+
+    void add(const Instruction& instruction);
+    void add_number(const Instruction& instruction);
+    void add_string(const Instruction& instruction);
+    void add_number_string(const Instruction& instruction);
+    void add_string_number(const Instruction& instruction);
 
 private:
     void execute_instruction(const Instruction& instruction);
