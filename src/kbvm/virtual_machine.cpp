@@ -91,10 +91,63 @@ void KVirtualMachine::add(const Instruction& instruction)
 
 }
 
+void KVirtualMachine::eq_number(const Instruction& instruction)
+{
+   const bool result = this->get_number(instruction.src1) == this->get_number(instruction.src2);
+   this->set(instruction.dest, result);
+}
+
+void KVirtualMachine::eq_bool(const Instruction& instruction)
+{
+    const bool result = this->get_bool(instruction.src1) == this->get_bool(instruction.src2);
+    this->set(instruction.dest, result);
+}
+
+void KVirtualMachine::eq_string(const Instruction& instruction)
+{
+    const bool result = this->get_string(instruction.src1) == this->get_string(instruction.src2);
+    this->set(instruction.dest, result);
+}
+
+void KVirtualMachine::eq(const Instruction& instruction)
+{
+    const auto& address = instruction.src1;
+    switch (this->memory.at(address).type)
+    {
+        case MemoryType::Number:
+            this->eq_number(instruction);
+            break;
+        case MemoryType::Bool:
+            this->eq_bool(instruction);
+            break;
+        case MemoryType::String:
+            this->eq_string(instruction);
+            break;
+    }
+}
+
+void KVirtualMachine::print(const Instruction& instruction)
+{
+    const auto& address = instruction.src1;
+    switch (this->memory.at(address).type)
+    {
+        case MemoryType::Number:
+            coutnl(this->get_number(address));
+            break;
+        case MemoryType::Bool:
+            coutnl(this->get_bool(address));
+            break;
+        case MemoryType::String:
+            coutnl(this->get_string(address));
+            break;
+    }
+}
+
 void KVirtualMachine::execute_instruction(const Instruction& instruction)
 {
 
-    switch (instruction.type) {
+    switch (instruction.type)
+    {
         case InstructionType::Add:
             this->add(instruction);
             break;
@@ -135,21 +188,54 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
             break;
         }
         case InstructionType::Eq:
+        {
+            this->eq(instruction);
+        }
+        case InstructionType::EqNumber:
+            this->eq_number(instruction);
+            break;
+        case InstructionType::EqBool:
+            this->eq_bool(instruction);
+            break;
+        case InstructionType::EqString:
+            this->eq_string(instruction);
             break;
         case InstructionType::Neq:
             break;
         case InstructionType::Lt:
+        {
+            const auto result = this->get_number(instruction.src1) < this->get_number(instruction.src2);
+            this->set(instruction.dest, result);
             break;
+        }
         case InstructionType::Gt:
+        {
+            const auto result = this->get_number(instruction.src1) > this->get_number(instruction.src2);
+            this->set(instruction.dest, result);
             break;
+        }
         case InstructionType::Lte:
+        {
+            const auto result = this->get_number(instruction.src1) <= this->get_number(instruction.src2);
+            this->set(instruction.dest, result);
             break;
+        }
         case InstructionType::Gte:
+        {
+            const auto result = this->get_number(instruction.src1) >= this->get_number(instruction.src2);
+            this->set(instruction.dest, result);
             break;
+        }
         case InstructionType::And:
-            break;
+        {
+            const auto result = this->get_bool(instruction.src1) && this->get_bool(instruction.src2);
+            this->set(instruction.dest, result);
+        }
         case InstructionType::Or:
-            break;
+        {
+            const auto result = this->get_bool(instruction.src1) || this->get_bool(instruction.src2);
+            this->set(instruction.dest, result);
+        }
         case InstructionType::LetNumber:
             this->set(instruction.dest, instruction.imm_number);
             break;
@@ -166,22 +252,8 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
         case InstructionType::Second:
             break;
         case InstructionType::Print:
-        {
-            const auto& address = instruction.src1;
-            switch (this->memory.at(address).type)
-            {
-                case Number:
-                    coutnl(this->get_number(address));
-                    break;
-                case Bool:
-                    coutnl(this->get_bool(address));
-                    break;
-                case String:
-                    coutnl(this->get_string(address));
-                    break;
-            }
+            this->print(instruction);
             break;
-        }
         case InstructionType::PrintNumber:
             coutnl(this->get_number(instruction.src1));
             break;

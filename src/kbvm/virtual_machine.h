@@ -43,11 +43,19 @@ private:
     void set(const std::string& address, const bool value);
     void set(const std::string& address, std::string value);
 
-    void add(const Instruction& instruction);
     void add_number(const Instruction& instruction);
     void add_string(const Instruction& instruction);
     void add_number_string(const Instruction& instruction);
     void add_string_number(const Instruction& instruction);
+    void add(const Instruction& instruction);
+
+    void eq_bool(const Instruction& instruction);
+    void eq_number(const Instruction& instruction);
+    void eq_string(const Instruction& instruction);
+    void eq(const Instruction& instruction);
+
+    void print(const Instruction& instruction);
+
 
 private:
     void execute_instruction(const Instruction& instruction);

@@ -13,7 +13,7 @@ enum class InstructionType {
     Add, AddNumber, AddString, AddNumberString, AddStringNumber,
     Sub,
     Mul, Div, Rem,
-    Eq, Neq,
+    Eq, EqNumber, EqBool, EqString, Neq,
     Lt, Gt,
     Lte, Gte,
     And, Or,
