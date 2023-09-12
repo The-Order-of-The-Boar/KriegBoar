@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <iostream>
 
 #include "../code/code.hpp"
 
@@ -54,3 +55,9 @@ private:
 public:
     KVirtualMachine(const Code& code);
 };
+
+template <class type>
+void coutnl(const type& value)
+{
+    std::cout << value << std::endl;
+}

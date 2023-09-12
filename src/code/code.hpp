@@ -19,7 +19,7 @@ enum class InstructionType {
     And, Or,
     LetNumber, LetString, LetBool,
     CreateTuple, First, Second,
-    PrintNumber, PrintString, PrintBool,
+    Print, PrintNumber, PrintString, PrintBool,
     Branch, BranchIf
 };
 

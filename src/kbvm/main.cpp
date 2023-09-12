@@ -25,17 +25,22 @@ int main()
             // Specific type print
         Instruction{.type = InstructionType::PrintBool, .src1 = "b1" },
         Instruction{.type = InstructionType::PrintNumber, .src1 = "n1"},
-        Instruction{.type = InstructionType::PrintNumber, .src1 = "n2"},
         Instruction{.type = InstructionType::PrintString, .src1 = "s1"},
-        Instruction{.type = InstructionType::PrintString, .src1 = "s2"},
+
+        new_line,
+
+            // Generic type print
+        Instruction{.type = InstructionType::Print, .src1 = "should_continue"},
+        Instruction{.type = InstructionType::Print, .src1 = "n2"},
+        Instruction{.type = InstructionType::Print, .src1 = "s2"},
 
         new_line,
 
         // Exists the program after the flag should continue is set to false at the end of the program
-        Instruction{.type = InstructionType::BranchIf, .src1 = "should_continue", .label = 19}, // Instruction 16
+        Instruction{.type = InstructionType::BranchIf, .src1 = "should_continue", .label = 21}, // Instruction 18
         Instruction{.type = InstructionType::PrintString, .src1 = "exit_message"},
         Instruction{.type = InstructionType::Branch, .label = 6666},
-        Instruction{.type = InstructionType::PrintString, .src1 = "continue_message"}, // Instruction 19
+        Instruction{.type = InstructionType::PrintString, .src1 = "continue_message"}, // Instruction 21
 
         new_line,
 
@@ -79,7 +84,7 @@ int main()
         new_line,
 
         Instruction{.type = InstructionType::LetBool, .dest = "should_continue", .imm_bool = false},
-        Instruction{.type = InstructionType::Branch, .label = 16}, // Jumps to instruction 15 to check if the program has to end
+        Instruction{.type = InstructionType::Branch, .label = 19}, // Jumps to instruction 18 to check if the program has to end
     };
 
     KVirtualMachine virtual_machine{Code{instructions}};

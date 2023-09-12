@@ -165,14 +165,31 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
             break;
         case InstructionType::Second:
             break;
+        case InstructionType::Print:
+        {
+            const auto& address = instruction.src1;
+            switch (this->memory.at(address).type)
+            {
+                case Number:
+                    coutnl(this->get_number(address));
+                    break;
+                case Bool:
+                    coutnl(this->get_bool(address));
+                    break;
+                case String:
+                    coutnl(this->get_string(address));
+                    break;
+            }
+            break;
+        }
         case InstructionType::PrintNumber:
-            std::cout << this->get_number(instruction.src1) << std::endl;
+            coutnl(this->get_number(instruction.src1));
             break;
         case InstructionType::PrintBool:
-            std::cout << this->get_bool(instruction.src1) << std::endl;
+            coutnl(this->get_bool(instruction.src1));
             break;
         case InstructionType::PrintString:
-            std::cout << this->get_string(instruction.src1) << std::endl;
+            coutnl(this->get_string(instruction.src1));
             break;
         case InstructionType::Branch:
             this->program_counter = instruction.label;
