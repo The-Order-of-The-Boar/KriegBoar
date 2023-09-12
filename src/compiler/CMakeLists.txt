@@ -1,7 +1,9 @@
 
 # target
 
-add_executable(kbc main.cpp)
+add_executable(kbc main.cpp
+        tree.hpp
+)
 set_build_flags(kbc)
 
 
