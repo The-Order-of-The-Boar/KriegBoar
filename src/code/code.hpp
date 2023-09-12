@@ -19,7 +19,7 @@ enum class InstructionType {
     And, Or,
     LetNumber, LetString, LetBool,
     CreateTuple, First, Second,
-    Print,
+    PrintNumber, PrintString, PrintBool,
     Branch, BranchIf
 };
 
@@ -33,6 +33,10 @@ struct Instruction {
     const Address src1;
     const Address src2;
     const size_t label;
+
+    const bool imm_bool;
+    const Address imm_string;
+    const int32_t imm_number;
 
 };
 
