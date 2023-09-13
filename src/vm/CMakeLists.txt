@@ -15,4 +15,5 @@ set_build_flags(kbvm_test)
 
 target_link_libraries(kbvm PRIVATE kbutils)
 target_link_libraries(kbvm PRIVATE fmt::fmt)
+target_link_libraries(kbvm_test PRIVATE kbvm)
 target_link_libraries(kbvm_test PRIVATE Catch2::Catch2 Catch2::Catch2WithMain)
