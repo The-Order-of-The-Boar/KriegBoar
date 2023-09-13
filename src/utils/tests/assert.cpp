@@ -7,17 +7,18 @@
 
 
 
-bool const assert_exception = true;
-
-
 TEST_CASE("always assert")
 {
+    assert_enable_exception_mode();
+
     REQUIRE_NOTHROW(always_assert(true));
     REQUIRE_THROWS(always_assert(false));
 }
 
 TEST_CASE("debug assert")
 {
+    assert_enable_exception_mode();
+
 #ifndef NDEBUG
 
     REQUIRE_THROWS(debug_assert(false));

@@ -9,7 +9,6 @@
 
 
 
-extern bool const assert_exception;
-
+void assert_enable_exception_mode();
 void debug_assert(bool result, std::string const& message = "", SourceLocation location = SourceLocation{});
 void always_assert(bool result, std::string const& message = "", SourceLocation location = SourceLocation{});

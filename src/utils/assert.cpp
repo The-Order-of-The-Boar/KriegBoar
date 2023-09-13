@@ -7,6 +7,14 @@
 
 
 
+bool assert_exception = false;
+
+void assert_enable_exception_mode()
+{
+    assert_exception = true;
+}
+
+
 class AssertException final : std::exception {
 private:
 
@@ -39,7 +47,6 @@ void panic(std::string const& message, SourceLocation location)
     std::exit(1);
 }
 
-
 void debug_assert(bool result, std::string const& message, SourceLocation location)
 {
 #if !defined NDEBUG
@@ -54,12 +61,11 @@ void debug_assert(bool result, std::string const& message, SourceLocation locati
 
 #endif
 }
-
 void always_assert(bool result, std::string const& message, SourceLocation location)
 {
     // do nothing if result is true
-    if (result == true) [[likely]]
-        return;
+    // if (result == true) [[likely]]
+    //     return;
 
     // build panic message, using custom if there is one
     std::string panic_message = "assertion failed";
