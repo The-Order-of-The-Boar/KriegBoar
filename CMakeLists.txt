@@ -38,11 +38,11 @@ function(set_build_flags executable)
             -fdiagnostics-color=always
 
             $<$<CONFIG:DEBUG,RELWITHDEBINFO>:-g>
-
             $<$<CONFIG:RELEASE>:-DNDEBUG>
-            $<$<CONFIG:RELEASE>:-O3>
-            $<$<CONFIG:RELEASE>:-flto>
-            $<$<CONFIG:RELEASE>:-march=native>
+
+            $<$<CONFIG:RELEASE,RELWITHDEBINFO>:-O3>
+            $<$<CONFIG:RELEASE,RELWITHDEBINFO>:-flto>
+            $<$<CONFIG:RELEASE,RELWITHDEBINFO>:-march=native>
     )
 
 endfunction()
