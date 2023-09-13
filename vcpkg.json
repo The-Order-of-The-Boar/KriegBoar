@@ -9,6 +9,10 @@
     {
       "name": "nlohmann-json",
       "version>=": "3.11.2"
+    },
+    {
+      "name": "catch2",
+      "version>=": "3.3.2"
     }
   ],
   "builtin-baseline": "e4b44696112d3a27b3dfe7743cfa3c2e4d9310fd"

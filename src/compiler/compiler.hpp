@@ -1,9 +1,11 @@
+#pragma once
 
+// builtin
 #include <iostream>
 
 
 
-int main()
+inline void func_compiler()
 {
     std::cout << "KriegBoar compiler" << std::endl;
 }

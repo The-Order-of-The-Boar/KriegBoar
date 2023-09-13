@@ -1,9 +1,11 @@
+#pragma once
 
+// builtin
 #include <iostream>
 
 
 
-int main()
+inline void func_vm()
 {
     std::cout << "KriegBoar VM" << std::endl;
 }

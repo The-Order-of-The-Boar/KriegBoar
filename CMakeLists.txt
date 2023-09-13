@@ -52,11 +52,13 @@ endfunction()
 
 find_package(fmt CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
 
 # targets
 
+add_subdirectory(src/utils kbutils)
 add_subdirectory(src/compiler kbc)
 add_subdirectory(src/vm kbvm)
-add_subdirectory(src/utils kbutils)
 add_subdirectory(src/code kbcode)
+add_subdirectory(src/main kbmain)
