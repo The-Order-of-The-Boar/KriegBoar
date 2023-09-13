@@ -8,6 +8,9 @@
 
 
 
+bool const assert_exception = false;
+
+
 int main() {
 
     std::cout << "KriegBoar main" << std::endl;

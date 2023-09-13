@@ -9,7 +9,8 @@ add_library(kbutils
 target_include_directories(kbutils INTERFACE .)
 set_build_flags(kbutils)
 
-add_executable(kbutils_test tests/__placeholder__.cpp)
+add_executable(kbutils_test
+        tests/assert.cpp)
 set_build_flags(kbutils_test)
 
 # libraries
