@@ -3,7 +3,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 // local
-#include <assert.hpp>
+#include "assert.hpp"
 
 
 

@@ -64,8 +64,8 @@ void debug_assert(bool result, std::string const& message, SourceLocation locati
 void always_assert(bool result, std::string const& message, SourceLocation location)
 {
     // do nothing if result is true
-    // if (result == true) [[likely]]
-    //     return;
+    if (result == true) [[likely]]
+        return;
 
     // build panic message, using custom if there is one
     std::string panic_message = "assertion failed";
