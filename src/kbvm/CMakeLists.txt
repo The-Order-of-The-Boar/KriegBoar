@@ -3,6 +3,7 @@
 
 add_executable(kbvm main.cpp
         virtual_machine.cpp
+        ../utils/assert.cpp
 )
 set_build_flags(kbvm)
 

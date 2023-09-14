@@ -16,60 +16,27 @@ KVirtualMachine::KVirtualMachine(const Code& code)
     }
 }
 
-inline int KVirtualMachine::get_number(const std::string& address) const
-{
-    return this->memory.at(address).var.number_var;
-}
-
-inline bool KVirtualMachine::get_bool(const std::string& address) const
-{
-    return this->memory.at(address).var.bool_var;
-}
-
-inline const std::string& KVirtualMachine::get_string(const std::string& address) const
-{
-    return this->memory.at(address).var.string_var;
-}
-
-inline void KVirtualMachine::set(const std::string& address, const int value)
-{
-    this->memory[address].type = MemoryType::Number;
-    this->memory[address].var.number_var = value;
-}
-
-inline void KVirtualMachine::set(const std::string& address, const bool value)
-{
-    this->memory[address].type = MemoryType::Bool;
-    this->memory[address].var.bool_var = value;
-}
-
-inline void KVirtualMachine::set(const std::string& address, const std::string value)
-{
-    this->memory[address].type = MemoryType::String;
-    this->memory[address].var.string_var = value;
-}
-
 void KVirtualMachine::add_number(const Instruction& instruction)
 {
-    const auto result = this->get_number(instruction.src1) + this->get_number(instruction.src2);
+    const auto result = this->get<int32_t>(instruction.src1) + this->get<int32_t>(instruction.src2);
     this->set(instruction.dest, result);
 }
 
 void KVirtualMachine::add_string(const Instruction& instruction)
 {
-    const auto result = this->get_string(instruction.src1) + this->get_string(instruction.src2);
+    const auto result = this->get<std::string>(instruction.src1) + this->get<std::string>(instruction.src2);
     this->set(instruction.dest, result);
 }
 
 void KVirtualMachine::add_number_string(const Instruction& instruction)
 {
-    const auto result = std::to_string(this->get_number(instruction.src1)) + this->get_string(instruction.src2);
+    const auto result = std::to_string(this->get<int32_t>(instruction.src1)) + this->get<std::string>(instruction.src2);
     this->set(instruction.dest, result);
 }
 
 void KVirtualMachine::add_string_number(const Instruction& instruction)
 {
-    const auto result = this->get_string(instruction.src1) + std::to_string(this->get_number(instruction.src2));
+    const auto result = this->get<std::string>(instruction.src1) + std::to_string(this->get<std::int32_t>(instruction.src2));
     this->set(instruction.dest, result);
 }
 
@@ -91,56 +58,16 @@ void KVirtualMachine::add(const Instruction& instruction)
 
 }
 
-void KVirtualMachine::eq_number(const Instruction& instruction)
+void KVirtualMachine::eq(const Instruction& instruction)
 {
-   const bool result = this->get_number(instruction.src1) == this->get_number(instruction.src2);
+   const bool result = this->memory.at(instruction.src1).var == this->memory.at(instruction.src2).var;
    this->set(instruction.dest, result);
 }
 
-void KVirtualMachine::eq_bool(const Instruction& instruction)
+void KVirtualMachine::print(const std::string& address) const
 {
-    const bool result = this->get_bool(instruction.src1) == this->get_bool(instruction.src2);
-    this->set(instruction.dest, result);
-}
-
-void KVirtualMachine::eq_string(const Instruction& instruction)
-{
-    const bool result = this->get_string(instruction.src1) == this->get_string(instruction.src2);
-    this->set(instruction.dest, result);
-}
-
-void KVirtualMachine::eq(const Instruction& instruction)
-{
-    const auto& address = instruction.src1;
-    switch (this->memory.at(address).type)
-    {
-        case MemoryType::Number:
-            this->eq_number(instruction);
-            break;
-        case MemoryType::Bool:
-            this->eq_bool(instruction);
-            break;
-        case MemoryType::String:
-            this->eq_string(instruction);
-            break;
-    }
-}
-
-void KVirtualMachine::print(const Instruction& instruction)
-{
-    const auto& address = instruction.src1;
-    switch (this->memory.at(address).type)
-    {
-        case MemoryType::Number:
-            coutnl(this->get_number(address));
-            break;
-        case MemoryType::Bool:
-            coutnl(this->get_bool(address));
-            break;
-        case MemoryType::String:
-            coutnl(this->get_string(address));
-            break;
-    }
+    const auto& variable = this->memory.at(address).var;
+    std::visit([](auto& var) {std::cout << var << std::endl;}, variable);
 }
 
 void KVirtualMachine::execute_instruction(const Instruction& instruction)
@@ -165,25 +92,25 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
             break;
         case InstructionType::Sub:
         {
-            const auto result= this->get_number(instruction.src1) - this->get_number(instruction.src2);
+            const auto result= this->get<int32_t>(instruction.src1) - this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Mul:
         {
-            const auto result = this->get_number(instruction.src1) * this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) * this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Div:
         {
-            const auto result = this->get_number(instruction.src1) / this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) / this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Rem:
         {
-            const auto result= this->get_number(instruction.src1) % this->get_number(instruction.src2);
+            const auto result= this->get<int32_t>(instruction.src1) % this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
@@ -192,48 +119,48 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
             this->eq(instruction);
         }
         case InstructionType::EqNumber:
-            this->eq_number(instruction);
+            this->eq(instruction);
             break;
         case InstructionType::EqBool:
-            this->eq_bool(instruction);
+            this->eq(instruction);
             break;
         case InstructionType::EqString:
-            this->eq_string(instruction);
+            this->eq(instruction);
             break;
         case InstructionType::Neq:
             break;
         case InstructionType::Lt:
         {
-            const auto result = this->get_number(instruction.src1) < this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) < this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Gt:
         {
-            const auto result = this->get_number(instruction.src1) > this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) > this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Lte:
         {
-            const auto result = this->get_number(instruction.src1) <= this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) <= this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::Gte:
         {
-            const auto result = this->get_number(instruction.src1) >= this->get_number(instruction.src2);
+            const auto result = this->get<int32_t>(instruction.src1) >= this->get<int32_t>(instruction.src2);
             this->set(instruction.dest, result);
             break;
         }
         case InstructionType::And:
         {
-            const auto result = this->get_bool(instruction.src1) && this->get_bool(instruction.src2);
+            const auto result = this->get<bool>(instruction.src1) && this->get<bool>(instruction.src2);
             this->set(instruction.dest, result);
         }
         case InstructionType::Or:
         {
-            const auto result = this->get_bool(instruction.src1) || this->get_bool(instruction.src2);
+            const auto result = this->get<bool>(instruction.src1) || this->get<bool>(instruction.src2);
             this->set(instruction.dest, result);
         }
         case InstructionType::LetNumber:
@@ -252,22 +179,22 @@ void KVirtualMachine::execute_instruction(const Instruction& instruction)
         case InstructionType::Second:
             break;
         case InstructionType::Print:
-            this->print(instruction);
+            this->print(instruction.src1);
             break;
         case InstructionType::PrintNumber:
-            coutnl(this->get_number(instruction.src1));
+            coutnl(this->get<int32_t>(instruction.src1));
             break;
         case InstructionType::PrintBool:
-            coutnl(this->get_bool(instruction.src1));
+            coutnl(this->get<bool>(instruction.src1));
             break;
         case InstructionType::PrintString:
-            coutnl(this->get_string(instruction.src1));
+            coutnl(this->get<std::string>(instruction.src1));
             break;
         case InstructionType::Branch:
             this->program_counter = instruction.label;
             break;
         case InstructionType::BranchIf:
-            if(this->get_bool(instruction.src1)) this->program_counter = instruction.label;
+            if(this->get<bool>(instruction.src1)) this->program_counter = instruction.label;
             break;
     }
 }
