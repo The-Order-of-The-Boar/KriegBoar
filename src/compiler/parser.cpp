@@ -81,7 +81,7 @@ FunctionCall parse_function_call(nlohmann::json const& input)
     expect_from_input(input["arguments"].is_array());
 
     std::vector<std::unique_ptr<Expression>> args;
-    for (const auto& value: input["arguments"])
+    for (auto const& value: input["arguments"])
         args.push_back(parse_expression(value));
 
     return FunctionCall{.callee = std::move(callee), .args = std::move(args)};
@@ -125,8 +125,8 @@ Let parse_let(nlohmann::json const& input)
     return Let{.name = name, .value = std::move(value), .next = std::move(next)};
 }
 
-If parse_if(nlohmann::json const& input) {
-
+If parse_if(nlohmann::json const& input)
+{
     expect_kind(input, "If");
 
     // condition
@@ -144,8 +144,8 @@ If parse_if(nlohmann::json const& input) {
     return If{.cond_expr = std::move(condition), .body = std::move(body), .else_body = std::move(else_body)};
 }
 
-Tuple parse_tuple(nlohmann::json const& input) {
-
+Tuple parse_tuple(nlohmann::json const& input)
+{
     expect_kind(input, "Tuple");
 
     expect_from_input(input.contains("first"));
@@ -157,8 +157,8 @@ Tuple parse_tuple(nlohmann::json const& input) {
     return Tuple{.first = std::move(first), .second = std::move(second)};
 }
 
-Binary parse_binary(nlohmann::json const& input) {
-
+Binary parse_binary(nlohmann::json const& input)
+{
     expect_kind(input, "Binary");
 
     // left
@@ -174,20 +174,11 @@ Binary parse_binary(nlohmann::json const& input) {
     expect_from_input(input["op"].is_string());
     std::string repr_oprt = input["op"];
 
-    static std::unordered_map<std::string, BinaryOprt> const oprt_map {
-        {"Add", BinaryOprt::Add},
-        {"Sub", BinaryOprt::Sub},
-        {"Mul", BinaryOprt::Mul},
-        {"Div", BinaryOprt::Div},
-        {"Rem", BinaryOprt::Rem},
-        {"Eq",  BinaryOprt::Eq},
-        {"Neq", BinaryOprt::Neq},
-        {"Lt",  BinaryOprt::Lt},
-        {"Gt",  BinaryOprt::Gt},
-        {"Lte", BinaryOprt::Lte},
-        {"Gte", BinaryOprt::Gte},
-        {"And", BinaryOprt::Add},
-        {"Or",  BinaryOprt::Or},
+    static std::unordered_map<std::string, BinaryOprt> const oprt_map{
+        {"Add", BinaryOprt::Add}, {"Sub", BinaryOprt::Sub}, {"Mul", BinaryOprt::Mul}, {"Div", BinaryOprt::Div},
+        {"Rem", BinaryOprt::Rem}, {"Eq", BinaryOprt::Eq},   {"Neq", BinaryOprt::Neq}, {"Lt", BinaryOprt::Lt},
+        {"Gt", BinaryOprt::Gt},   {"Lte", BinaryOprt::Lte}, {"Gte", BinaryOprt::Gte}, {"And", BinaryOprt::Add},
+        {"Or", BinaryOprt::Or},
     };
 
     expect_from_input(oprt_map.contains(repr_oprt));
@@ -196,8 +187,8 @@ Binary parse_binary(nlohmann::json const& input) {
     return Binary{.oprt = oprt, .left = std::move(left), .right = std::move(right)};
 }
 
-NativeFunctionCall parse_native_function_call(nlohmann::json const& input) {
-
+NativeFunctionCall parse_native_function_call(nlohmann::json const& input)
+{
     expect_from_input(input.contains("kind"));
     expect_from_input(input["kind"].is_string());
     std::string func_name = input["kind"];

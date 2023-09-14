@@ -4,8 +4,8 @@
 #include <nlohmann/json.hpp>
 
 // local
-#include <assert.hpp>
 #include "tree.hpp"
+#include <assert.hpp>
 
 
 

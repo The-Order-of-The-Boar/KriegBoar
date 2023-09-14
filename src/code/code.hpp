@@ -1,47 +1,58 @@
 #pragma once
 
 // builtin
-#include <vector>
-#include <string>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <string>
+#include <vector>
 
 
 
 enum class InstructionType {
-
-    Add, AddNumber, AddString, AddNumberString,
+    Add,
+    AddNumber,
+    AddString,
+    AddNumberString,
     Sub,
-    Mul, Div, Rem,
-    Eq, Neq,
-    Lt, Gt,
-    Lte, Gte,
-    And, Or,
-    LetNumber, LetString, LetBool,
-    CreateTuple, First, Second,
+    Mul,
+    Div,
+    Rem,
+    Eq,
+    Neq,
+    Lt,
+    Gt,
+    Lte,
+    Gte,
+    And,
+    Or,
+    LetNumber,
+    LetString,
+    LetBool,
+    CreateTuple,
+    First,
+    Second,
     Print,
-    Branch, BranchIf
+    Branch,
+    BranchIf
 };
 
 
 using Address = std::string;
 
 struct Instruction {
-
-    const InstructionType type;
-    const Address dest;
-    const Address src1;
-    const Address src2;
-    const size_t label;
+    InstructionType const type;
+    Address const dest;
+    Address const src1;
+    Address const src2;
+    size_t const label;
 
     union {
-        const bool imm_bool;
-        const std::string imm_string;
-        const int32_t imm_number;
+        bool const imm_bool;
+        std::string const imm_string;
+        int32_t const imm_number;
     };
 };
 
 struct Code {
-
-    const std::vector<Instruction> code;
+    std::vector<Instruction> const code;
 };
