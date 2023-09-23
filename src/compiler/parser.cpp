@@ -38,7 +38,7 @@ Number parse_number(nlohmann::json const& input)
 
     expect_from_input(input.contains("value"));
     expect_from_input(input["value"].is_number());
-    return Number{.value = input["value"]};
+    return Number{input["value"]};
 }
 
 String parse_string(nlohmann::json const& input)
@@ -47,7 +47,7 @@ String parse_string(nlohmann::json const& input)
 
     expect_from_input(input.contains("value"));
     expect_from_input(input["value"].is_string());
-    return String{.value = input["value"]};
+    return String{input["value"]};
 }
 
 Bool parse_bool(nlohmann::json const& input)
@@ -56,7 +56,7 @@ Bool parse_bool(nlohmann::json const& input)
 
     expect_from_input(input.contains("value"));
     expect_from_input(input["value"].is_boolean());
-    return Bool{.value = input["value"]};
+    return Bool{input["value"]};
 }
 
 Var parse_var(nlohmann::json const& input)
@@ -65,7 +65,7 @@ Var parse_var(nlohmann::json const& input)
 
     expect_from_input(input.contains("text"));
     expect_from_input(input["text"].is_string());
-    return Var{.name = input["text"]};
+    return Var{input["text"]};
 }
 
 FunctionCall parse_function_call(nlohmann::json const& input)
@@ -84,7 +84,7 @@ FunctionCall parse_function_call(nlohmann::json const& input)
     for (auto const& value: input["arguments"])
         args.push_back(parse_expression(value));
 
-    return FunctionCall{.callee = std::move(callee), .args = std::move(args)};
+    return FunctionCall{std::move(callee), std::move(args)};
 }
 
 Function parse_function(nlohmann::json const& input)
@@ -103,7 +103,7 @@ Function parse_function(nlohmann::json const& input)
     expect_from_input(input.contains("value"));
     auto body = parse_expression(input["value"]);
 
-    return Function{.parameters = parameters, .body = std::move(body)};
+    return Function{parameters, std::move(body)};
 }
 
 Let parse_let(nlohmann::json const& input)
@@ -122,7 +122,7 @@ Let parse_let(nlohmann::json const& input)
     expect_from_input(input.contains("next"));
     auto next = parse_expression(input["next"]);
 
-    return Let{.name = name, .value = std::move(value), .next = std::move(next)};
+    return Let{name, std::move(value), std::move(next)};
 }
 
 If parse_if(nlohmann::json const& input)
@@ -141,7 +141,7 @@ If parse_if(nlohmann::json const& input)
     expect_from_input(input.contains("otherwise"));
     auto else_body = parse_expression(input["otherwise"]);
 
-    return If{.cond_expr = std::move(condition), .body = std::move(body), .else_body = std::move(else_body)};
+    return If{std::move(condition), std::move(body), std::move(else_body)};
 }
 
 Tuple parse_tuple(nlohmann::json const& input)
@@ -154,7 +154,7 @@ Tuple parse_tuple(nlohmann::json const& input)
     expect_from_input(input.contains("second"));
     auto second = parse_expression(input["second"]);
 
-    return Tuple{.first = std::move(first), .second = std::move(second)};
+    return Tuple{std::move(first), std::move(second)};
 }
 
 Binary parse_binary(nlohmann::json const& input)
@@ -184,7 +184,7 @@ Binary parse_binary(nlohmann::json const& input)
     expect_from_input(oprt_map.contains(repr_oprt));
     auto oprt = oprt_map.at(repr_oprt);
 
-    return Binary{.oprt = oprt, .left = std::move(left), .right = std::move(right)};
+    return Binary{oprt, std::move(left), std::move(right)};
 }
 
 NativeFunctionCall parse_native_function_call(nlohmann::json const& input)
@@ -196,7 +196,7 @@ NativeFunctionCall parse_native_function_call(nlohmann::json const& input)
     expect_from_input(input.contains("value"));
     auto arg = parse_expression(input["value"]);
 
-    return NativeFunctionCall{.name = func_name, .arg = std::move(arg)};
+    return NativeFunctionCall{func_name, std::move(arg)};
 }
 
 
@@ -208,7 +208,9 @@ std::unique_ptr<Expression> parse_expression(nlohmann::json const& input)
     std::string kind = input["kind"];
 
 #define DeclLambdaWrapper(func_name)                                                                                   \
-    [](nlohmann::json const& input) { return std::make_unique<Expression>(func_name(input)); }
+    [](nlohmann::json const& input) -> std::unique_ptr<Expression> {                                                   \
+        return std::make_unique<typename decltype(std::function{func_name})::result_type>(func_name(input));           \
+    }
 
     static std::unordered_map<std::string, std::unique_ptr<Expression> (*)(nlohmann::json const&)> const kind_map{
         {"Int", DeclLambdaWrapper(parse_number)},
