@@ -8,7 +8,6 @@
 
 
 
-struct Expression;
 struct Number;
 struct String;
 struct Bool;
@@ -23,7 +22,6 @@ struct Binary;
 
 
 struct Visitor {
-    virtual void visit(Expression&) = 0;
     virtual void visit(Number&) = 0;
     virtual void visit(String&) = 0;
     virtual void visit(Bool&) = 0;

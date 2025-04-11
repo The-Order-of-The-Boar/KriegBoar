@@ -6,6 +6,7 @@ add_library(kbc
         parser.hpp
         parser.cpp
         compiler.hpp
+        tree_traverser.hpp
 )
 target_include_directories(kbc INTERFACE .)
 set_build_flags(kbc)
